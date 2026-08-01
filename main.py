@@ -88,7 +88,7 @@ def main():
         states={
             TicketStates.TITLE: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_ticket_title)],
             TicketStates.CONTENT: [
-                MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL.ALL) & ~filters.COMMAND, receive_ticket_content),
+                MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, receive_ticket_content),
                 CallbackQueryHandler(show_confirmation, pattern="^show_confirm$")
             ],
             TicketStates.CONFIRM: [
@@ -101,7 +101,7 @@ def main():
                 CallbackQueryHandler(show_confirmation, pattern="^show_confirm$")
             ],
             TicketStates.EDIT_TITLE: [MessageHandler(filters.TEXT & ~filters.COMMAND, save_edited_title)],
-            TicketStates.EDIT_MSG_1: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL.ALL) & ~filters.COMMAND, save_edited_message)],
+            TicketStates.EDIT_MSG_1: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, save_edited_message)],
             TicketStates.EDIT_MSG_2: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, save_edited_message)],
             TicketStates.EDIT_MSG_3: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, save_edited_message)],
         },
