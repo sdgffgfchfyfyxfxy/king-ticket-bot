@@ -88,7 +88,7 @@ def main():
         states={
             TicketStates.TITLE: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_ticket_title)],
             TicketStates.CONTENT: [
-                MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, receive_ticket_content),
+                MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL.ALL) & ~filters.COMMAND, receive_ticket_content),
                 CallbackQueryHandler(show_confirmation, pattern="^show_confirm$")
             ],
             TicketStates.CONFIRM: [
@@ -101,9 +101,9 @@ def main():
                 CallbackQueryHandler(show_confirmation, pattern="^show_confirm$")
             ],
             TicketStates.EDIT_TITLE: [MessageHandler(filters.TEXT & ~filters.COMMAND, save_edited_title)],
-            TicketStates.EDIT_MSG_1: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.DOCUMENT) & ~filters.COMMAND, save_edited_message)],
-            TicketStates.EDIT_MSG_2: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.DOCUMENT) & ~filters.COMMAND, save_edited_message)],
-            TicketStates.EDIT_MSG_3: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.DOCUMENT) & ~filters.COMMAND, save_edited_message)],
+            TicketStates.EDIT_MSG_1: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL.ALL) & ~filters.COMMAND, save_edited_message)],
+            TicketStates.EDIT_MSG_2: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, save_edited_message)],
+            TicketStates.EDIT_MSG_3: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, save_edited_message)],
         },
         fallbacks=[CallbackQueryHandler(cancel_ticket, pattern="^cancel_ticket$")]
     )
@@ -111,7 +111,7 @@ def main():
     admin_reply_conv = ConversationHandler(
         entry_points=[CallbackQueryHandler(admin_reply_start, pattern="^admin_reply_\\d+$")],
         states={
-            AdminStates.REPLYING: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.DOCUMENT) & ~filters.COMMAND, admin_send_reply_content)]
+            AdminStates.REPLYING: [MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, admin_send_reply_content)]
         },
         fallbacks=[CommandHandler("cancel", back_to_main_callback)]
     )
@@ -141,7 +141,7 @@ def main():
     app.add_handler(CallbackQueryHandler(admin_close_ticket_callback, pattern="^admin_close_\\d+$"))
     app.add_handler(CallbackQueryHandler(user_reply_new_message, pattern="^user_reply_\\d+$"))
     
-    app.add_handler(MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.DOCUMENT) & ~filters.COMMAND, user_active_ticket_message_handler))
+    app.add_handler(MessageHandler((filters.TEXT | filters.PHOTO | filters.VIDEO | filters.VOICE | filters.Document.ALL) & ~filters.COMMAND, user_active_ticket_message_handler))
 
     logger.info("ربات با موفقیت شروع به کار کرد...")
     app.run_polling()
